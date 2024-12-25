@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bounce Back Academy - Video Library</title>
+    <link rel="stylesheet" href="video.css">
+   
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const headerLinks = document.querySelectorAll('.header a');
+            const sections = document.querySelectorAll('.section');
+            const backToTop = document.getElementById('backToTop');
+            const searchInput = document.getElementById('searchInput');
+            const searchButton = document.getElementById('searchButton');
+            const videos = document.querySelectorAll('.video');
+
+            // Highlight active section
+            const highlightSection = () => {
+                let index = sections.length;
+                while (--index && window.scrollY + 100 < sections[index].offsetTop) {}
+                headerLinks.forEach((link) => link.classList.remove('active'));
+                headerLinks[index].classList.add('active');
+            };
+
+            highlightSection();
+            window.addEventListener('scroll', () => {
+                highlightSection();
+
+                // Show/Hide Back-to-Top Button
+                if (window.scrollY > 300) {
+                    backToTop.style.display = 'block';
+                } else {
+                    backToTop.style.display = 'none';
+                }
+            });
+
+            // Smooth scrolling
+            headerLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.querySelector(link.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // Back-to-Top functionality
+            backToTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Search functionality
+            searchButton.addEventListener('click', () => {
+                const query = searchInput.value.toLowerCase();
+                videos.forEach(video => {
+                    const title = video.querySelector('.video-title').textContent.toLowerCase();
+                    if (title.includes(query)) {
+                        video.style.display = 'block';
+                    } else {
+                        video.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="header">
+        <a href="#class9">Class 9</a>
+        <a href="#class10">Class 10</a>
+        <a href="#class11">Class 11</a>
+        <a href="#class12">Class 12</a>
+        <a href="#jeeAdvanced">JEE Advanced</a>
+        <a href="#neet">NEET</a>
+        <a href="#cuet">CUET</a>
+
+        <!-- Search Bar in Header -->
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search for a video...">
+            <button id="searchButton">
+                <img src="search-icon.png" alt="Search" style="width: 20px; height: 20px;">
+            </button>
+        </div>
+    </div>
+
+    <!-- Centered Bounce Back Academy Title -->
+    <h1 class="centered">Bounce Back Academy</h1>
+
+    <div class="container">
+        <!-- Class 9 Section -->
+        <div class="section" id="class9">
+            <h2>Class 9</h2>
+            <div class="video">
+                <p class="video-title">Introduction to Class 9 Physics</p>
+                <iframe src="https://www.youtube.com/embed/abc123" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="video">
+                <p class="video-title">Class 9 Mathematics Basics</p>
+                <iframe src="https://www.youtube.com/embed/def456" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <!-- Other sections (Class 10, Class 11, etc.) remain the same -->
+
+    </div>
+    <script>
+        let lastScrollTop = 0; // Track the last scroll position
+    
+        window.addEventListener("scroll", function() {
+            const header = document.querySelector(".header");
+            let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+    
+            // If scrolling down, hide the header
+            if (currentScroll > lastScrollTop) {
+                header.classList.add("hidden");
+            } else {
+                // If scrolling up, show the header
+                header.classList.remove("hidden");
+            }
+    
+            // Update last scroll position
+            lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+        });
+    </script>
+    
+
+    <button id="backToTop" style="display: none; position: fixed; bottom: 20px; right: 20px; padding: 10px 20px; background-color: #ff416c; color: white; border: none; border-radius: 5px; cursor: pointer;">Top</button>
+</body>
+</html>
